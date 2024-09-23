@@ -1,10 +1,18 @@
+import 'package:demo_flutter/api_postman/ui/detail_phone_screen.dart';
 import 'package:demo_flutter/demo_getx/binding/my_binding.dart';
 import 'package:demo_flutter/demo_getx/binding/ui_getx_binding.dart';
 import 'package:demo_flutter/demo_getx/presentations/ui_screen.dart';
+import 'package:demo_flutter/firebase/ui/login_ui.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-void main() {
+import 'controller/firebase_controller.dart';
+
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  Get.put(AuthController());
   runApp(const MyApp());
 }
 
@@ -15,18 +23,18 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      home: GetXUIDemo(),
-      getPages: [
-        GetPage(
-          name: '/home',
-          page: () => UIBindingScreen(),
-          binding: MyBinding(),
-        ),
-        GetPage(
-          name: '/main',
-          page: () => GetXUIDemo(),
-        ),
-      ],
+      home: FirebaseLogin(),
+      // getPages: [
+      //   GetPage(
+      //     name: '/home',
+      //     page: () => UIBindingScreen(),
+      //     binding: MyBinding(),
+      //   ),
+      //   GetPage(
+      //     name: '/main',
+      //     page: () => GetXUIDemo(),
+      //   ),
+      // ],
     );
   }
 }
