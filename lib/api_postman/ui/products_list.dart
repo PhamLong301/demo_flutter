@@ -21,7 +21,7 @@ class _ProductsListState extends State<ProductsList> {
     scrollController.addListener(() {
       if (scrollController.position.pixels ==
           scrollController.position.maxScrollExtent) {
-        controller.loadingMore();
+        controller.loadMoreProducts();
       }
     });
   }

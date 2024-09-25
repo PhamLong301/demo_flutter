@@ -3,55 +3,63 @@ import 'package:demo_flutter/services/api_service.dart';
 import 'package:get/get.dart';
 
 class ProductsController extends GetxController {
-  List<ProductModel> products = <ProductModel>[].obs;
-  RxBool isLoadingAll = false.obs;
-  RxBool isLoadingList = false.obs;
+  final RxList<ProductModel> products = <ProductModel>[].obs;
+  final RxBool isLoadingAll = false.obs;
+  final RxBool isLoadingList = false.obs;
 
   final ApiService apiService = ApiService();
 
-  int itemSize = 4;
+
+  final int pageSize = 4;
   int skipSize = 0;
   int? totalSize;
-
-  Future<void> getRecipes({
-    bool isLoadingMore = false,
-  }) async {
-    if (products.isEmpty) {
-      isLoadingAll.value = true;
-    }
-    if (isLoadingMore) {
-      isLoadingList.value = true;
-      skipSize += 4;
-    }
+  bool get canLoadMore => (products.length < (totalSize ?? 0));
+  Future<void> getProducts({bool isLoadingMore = false}) async {
+    setLoadingState(isLoadingMore);
 
     final ProductsTotalResponse? response = await apiService.fetchRecipes(
-      currentSize: itemSize,
+      currentSize: pageSize,
       skipSize: skipSize,
     );
-    if (itemSize == 4) {
-      isLoadingAll.value = false;
-    }
-    if (isLoadingMore) {
-      isLoadingList.value = false;
-    }
-    if (response == null) {
-      Get.snackbar('Error Loading data!', ':((');
-    } else {
+
+    resetLoadingState(isLoadingMore);
+
+    if (response != null) {
       totalSize = response.totalResults ?? 0;
       products.addAll(response.products ?? []);
+    } else {
+      handleError();
     }
-    print('products ${products.length}');
-  }
 
-  Future<void> loadingMore() async {
-    if (products.length < (totalSize ?? 0)) {
-      await getRecipes(isLoadingMore: true);
-    } else {}
+    print('Loaded products: ${products.length}');
+  }
+  Future<void> loadMoreProducts() async {
+    if (canLoadMore) {
+      skipSize += pageSize;
+      await getProducts(isLoadingMore: true);
+    }
+  }
+  void setLoadingState(bool isLoadingMore) {
+    if (isLoadingMore) {
+      isLoadingList.value = true;
+    } else {
+      isLoadingAll.value = true;
+    }
+  }
+  void resetLoadingState(bool isLoadingMore) {
+    if (isLoadingMore) {
+      isLoadingList.value = false;
+    } else {
+      isLoadingAll.value = false;
+    }
+  }
+  void handleError() {
+    Get.snackbar('Error Loading data!', ':((');
   }
 
   @override
   void onInit() async {
     super.onInit();
-    await getRecipes();
+    await getProducts();
   }
 }
