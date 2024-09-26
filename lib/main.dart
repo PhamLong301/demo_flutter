@@ -1,17 +1,25 @@
 import 'package:demo_flutter/api_postman/ui/detail_phone_screen.dart';
+import 'package:demo_flutter/api_postman/ui/thing_bought_ui.dart';
 import 'package:demo_flutter/demo_getx/binding/my_binding.dart';
 import 'package:demo_flutter/demo_getx/binding/ui_getx_binding.dart';
 import 'package:demo_flutter/demo_getx/presentations/ui_screen.dart';
 import 'package:demo_flutter/firebase/ui/login_ui.dart';
+import 'package:demo_flutter/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'controller/firebase_controller.dart';
 
+Future<void> configureApp() async{
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.android
+  );
+}
+
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  await configureApp();
   Get.put(AuthController());
   runApp(const MyApp());
 }
@@ -23,7 +31,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      home: FirebaseLogin(),
+      home: ThingBoughtUI(),
       // getPages: [
       //   GetPage(
       //     name: '/home',

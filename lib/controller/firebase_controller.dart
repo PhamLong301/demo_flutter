@@ -1,6 +1,7 @@
 // lib/controllers/auth_controller.dart
 import 'package:demo_flutter/api_postman/ui/detail_phone_screen.dart';
 import 'package:demo_flutter/api_postman/ui/products_list.dart';
+import 'package:demo_flutter/api_postman/ui/thing_bought_ui.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -37,7 +38,7 @@ class AuthController extends GetxController {
       );
       await auth.signInWithEmailAndPassword(email: email, password: password);
       Get.back();
-      Get.offAll(() => ProductsList());
+      Get.offAll(() => ThingBoughtUI());
     } catch (e) {
       Get.back();
       Get.snackbar("Lỗi đăng nhập", e.toString(),
@@ -65,7 +66,7 @@ class AuthController extends GetxController {
       if (user == null) {
         Get.offAll(() => FirebaseLogin());
       } else {
-        Get.offAll(() => ProductsList());
+        Get.offAll(() => ThingBoughtUI());
       }
     });
   }

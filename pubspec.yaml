@@ -40,8 +40,13 @@ dependencies:
   carousel_slider: ^5.0.0
   firebase_auth: 4.16.0
   firebase_core: any
+  cloud_firestore: any
+  firebase_storage: any
   dio: ^5.7.0
   pretty_dio_logger: ^1.4.0
+  uuid: ^4.5.0
+  loader_overlay: any
+  flutter_spinkit: any
 
 dev_dependencies:
   flutter_test:
@@ -67,8 +72,6 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-     - assets/a1.jpg
-     - assets/a2.jpg
      - assets/facebook.png
      - assets/google.png
 
