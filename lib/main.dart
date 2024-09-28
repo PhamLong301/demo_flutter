@@ -7,7 +7,9 @@ import 'package:demo_flutter/firebase/ui/login_ui.dart';
 import 'package:demo_flutter/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
+import 'package:loader_overlay/loader_overlay.dart';
 
 import 'controller/firebase_controller.dart';
 
@@ -31,7 +33,17 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      home: ThingBoughtUI(),
+      home: LoaderOverlay(
+        child: const ThingBoughtUI(),
+        overlayWidgetBuilder: (_) {
+          return const Center(
+            child: SpinKitCubeGrid(
+              color: Colors.blue,
+              size: 50.0,
+            ),
+          );
+        },
+      ),
       // getPages: [
       //   GetPage(
       //     name: '/home',
